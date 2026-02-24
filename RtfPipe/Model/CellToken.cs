@@ -15,7 +15,7 @@ namespace RtfPipe.Model
     public IEnumerable<IToken> Styles => _styles;
     public int Width { get; }
     public CellWidthUnit WidthUnit { get; } = CellWidthUnit.Null;
-    
+
     public TokenType Type => TokenType.CellFormat;
     public string Name => "CellToken" + Index;
 

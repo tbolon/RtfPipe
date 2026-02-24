@@ -9,8 +9,8 @@ namespace RtfPipe.Model
   internal class Element : Node
   {
     private Node _content;
-    
-    internal int TableLevel => Styles.OfType<NestingLevel>().FirstOrDefault()?.Value 
+
+    internal int TableLevel => Styles.OfType<NestingLevel>().FirstOrDefault()?.Value
       ?? (Styles.OfType<InTable>().Any() ? 1 : 0);
     internal int ListLevel => Styles.OfType<ListLevelNumber>().FirstOrDefault()?.Value ?? 0;
 
@@ -117,8 +117,8 @@ namespace RtfPipe.Model
       Styles.Set(styles
         .Where(t => (t.Type & TokenType.Format) > 0)
         .ToList());
-      if (Type == ElementType.Paragraph 
-        && Styles.OfType<ParagraphNumbering>().Any() 
+      if (Type == ElementType.Paragraph
+        && Styles.OfType<ParagraphNumbering>().Any()
         && !Styles.OfType<NumberingLevelContinue>().Any())
         Type = ElementType.ListItem;
     }

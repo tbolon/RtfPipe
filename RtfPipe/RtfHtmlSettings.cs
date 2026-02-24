@@ -76,6 +76,7 @@ namespace RtfPipe
     {
       if (picture.Type is EmfBlip || picture.Type is WmMetafile)
       {
+#if NETFRAMEWORK
         using (var source = new MemoryStream(picture.Bytes))
         using (var dest = new MemoryStream())
         {
@@ -83,6 +84,9 @@ namespace RtfPipe
           bmp.Save(dest, System.Drawing.Imaging.ImageFormat.Png);
           return "data:image/png;base64," + Convert.ToBase64String(dest.ToArray());
         }
+#else
+        throw new NotImplementedException($"Converting from {picture.Type} to PNG is not implemented in .NET Core/.NET 5+ because System.Drawing is not supported on all platforms. You can provide your own implementation of {nameof(ImageUriGetter)} to support this scenario.");
+#endif
       }
 
       return "data:" + picture.MimeType() + ";base64," + Convert.ToBase64String(picture.Bytes);

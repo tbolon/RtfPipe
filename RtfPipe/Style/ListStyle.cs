@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using RtfPipe.Tokens;
+using System.Collections.Generic;
 
 namespace RtfPipe
 {

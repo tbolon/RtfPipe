@@ -88,7 +88,7 @@ namespace RtfPipe.Model
       Clear();
       AddRange(styles);
     }
-    
+
     public bool TryRemoveFirst<S>(out S result) where S : IToken
     {
       result = default(S);

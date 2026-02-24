@@ -66,7 +66,7 @@ namespace RtfPipe.Model
 
       var groups = new Stack<TokenState>();
       groups.Push(new TokenState(body, defaultStyles));
-      
+
       while (groups.Count > 0)
       {
         while (groups.Peek().Tokens.MoveNext())
@@ -81,7 +81,7 @@ namespace RtfPipe.Model
               fallbackDest = childGroup.Contents[1] as IWord;
 
             if (childGroup.Contents.Count > 1
-              && childGroup.Contents[0] is IgnoreUnrecognized 
+              && childGroup.Contents[0] is IgnoreUnrecognized
               && (childGroup.Contents[1].GetType().Name == "GenericTag" || childGroup.Contents[1].GetType().Name == "GenericWord"))
             {
               // Ignore groups with the "skip if unrecognized" flag
@@ -164,7 +164,7 @@ namespace RtfPipe.Model
             else if (dest is ShapeTag)
             {
               var shape = new Shape(childGroup);
-              if (shape.Type == ShapeType.PictureFrame 
+              if (shape.Type == ShapeType.PictureFrame
                 && shape.Properties.TryGetValue("pib", out var picObj)
                 && picObj is Picture picture)
               {
@@ -262,7 +262,7 @@ namespace RtfPipe.Model
             lastParagraphStyle = null;
             if (!paragraph.Styles.Any())
               paragraph.SetStyles(groups.Peek().ParagraphStyles(document));
-            
+
             var nextParagraph = new Element(ElementType.Paragraph);
             paragraph.Parent.Add(nextParagraph);
             paragraph = nextParagraph;
@@ -274,7 +274,7 @@ namespace RtfPipe.Model
 
             var parent = paragraph.Parent;
             var cellContent = parent.Elements().Reverse()
-              .TakeWhile(e => e.Type != ElementType.TableCell 
+              .TakeWhile(e => e.Type != ElementType.TableCell
                 && e.Styles.OfType<InTable>().Any()
                 && e.TableLevel == paragraph.TableLevel).Reverse()
               .ToArray();
@@ -302,7 +302,7 @@ namespace RtfPipe.Model
               cell.SetStyles(groups.Peek().CellStyles(document));
               parent.Add(cell);
             }
-            
+
             var nextParagraph = new Element(ElementType.Paragraph);
             parent.Add(nextParagraph);
             paragraph = nextParagraph;
@@ -333,7 +333,7 @@ namespace RtfPipe.Model
               var row = new Element(ElementType.TableRow);
               var rowStyles = new StyleList(groups.Peek().Styles);
               rowStyles.Merge(new NestingLevel(Math.Max(currLevel - 1, 0)));
-              rowStyles.RemoveWhere(t => t is HalfCellPadding 
+              rowStyles.RemoveWhere(t => t is HalfCellPadding
                 || t is BorderToken
                 || t is CellBackgroundColor
                 || t is ParagraphBackgroundColor);
@@ -427,7 +427,7 @@ namespace RtfPipe.Model
         paragraph.Remove();
       else if (!paragraph.Styles.Any())
         paragraph.SetStyles(lastParagraphStyle.ParagraphStyles(document));
-      
+
       AddFootnotes(root, footnotes, document, defaultStyles);
 
       OrganizeMargins(root);
@@ -491,7 +491,7 @@ namespace RtfPipe.Model
         }
       }
     }
-      
+
     private void OrganizeTable(Element root)
     {
       var parents = root.Descendants()
@@ -499,7 +499,7 @@ namespace RtfPipe.Model
           && e.Elements().Any(c => c.Type == ElementType.TableRow))
         .ToList();
       var tables = new List<Element>();
-      
+
       foreach (var parent in parents)
       {
         var nodeList = new List<Node>();
@@ -508,18 +508,18 @@ namespace RtfPipe.Model
           node.Remove();
           if (node is Element row && row.Type == ElementType.TableRow)
           {
-            if (!(nodeList.LastOrDefault() is Element table 
+            if (!(nodeList.LastOrDefault() is Element table
               && table.Type == ElementType.Table))
             {
               table = new Element(ElementType.Table);
               tables.Add(table);
               nodeList.Add(table);
             }
-            
+
             table.Add(row);
             row.Styles.RemoveWhere(t => t is LeftIndent || t is RightIndent || t is SpaceAfter || t is SpaceBefore);
             if (!table.Styles.Any())
-              table.SetStyles(row.Styles.Where(t => t.Type != TokenType.CellFormat 
+              table.SetStyles(row.Styles.Where(t => t.Type != TokenType.CellFormat
                 && t.Type != TokenType.RowFormat
                 && !(t is TextAlign || t is LeftIndent || t is RightIndent)));
           }
@@ -679,7 +679,7 @@ namespace RtfPipe.Model
           listItem.Parent.Styles.RemoveWhere(t => t is LeftIndent || t is FirstLineIndent);
           var leftIndent = listItem.Styles.OfType<LeftIndent>().FirstOrDefault();
           var firstLineIndent = listItem.Styles.OfType<FirstLineIndent>().FirstOrDefault();
-          if (leftIndent != null && firstLineIndent != null 
+          if (leftIndent != null && firstLineIndent != null
             && (leftIndent.Value + firstLineIndent.Value).ToPx() < 0)
           {
             listItem.Styles.Merge(new FirstLineIndent(new UnitValue(leftIndent.Value.ToPx() * -1, UnitType.Pixel)));
@@ -688,7 +688,7 @@ namespace RtfPipe.Model
       }
 
       var parents = root.Descendants()
-        .Where(e => e.Type != ElementType.List && e.Type != ElementType.OrderedList 
+        .Where(e => e.Type != ElementType.List && e.Type != ElementType.OrderedList
           && e.Elements().Any(c => c.Type == ElementType.ListItem))
         .ToList();
 
@@ -705,7 +705,7 @@ namespace RtfPipe.Model
             {
               if (list.Type == ElementType.List || list.Type == ElementType.OrderedList)
               {
-                var currListId = listItem.Styles.OfType<ListStyleId>().FirstOrDefault()?.Value 
+                var currListId = listItem.Styles.OfType<ListStyleId>().FirstOrDefault()?.Value
                   ?? (int?)listItem.Styles.OfType<NumberingTypeToken>().FirstOrDefault()?.Value
                   ?? 1;
                 var prevListId = list.Styles.OfType<ListStyleId>().FirstOrDefault()?.Value
@@ -782,7 +782,7 @@ namespace RtfPipe.Model
           parent.Add(node);
       }
     }
-    
+
     private class TokenState
     {
       private readonly StyleList _styles = new StyleList();
@@ -791,7 +791,7 @@ namespace RtfPipe.Model
       public IEnumerator<IToken> Tokens { get; }
       public IEnumerable<IToken> Styles => _styles;
       public Element PreviousParagraph { get; set; }
-      
+
       public TokenState(IEnumerable<IToken> tokens, List<IToken> defaultStyles)
       {
         Tokens = tokens.GetEnumerator();
