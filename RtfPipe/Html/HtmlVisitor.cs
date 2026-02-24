@@ -10,9 +10,8 @@ namespace RtfPipe.Model
   internal class HtmlVisitor : INodeVisitor
   {
     private UnitValue _defaultTabWidth = new UnitValue(0.5, UnitType.Inch);
-    private HtmlTag _lastTag;
-    private Stack<StyleList> _stack = new Stack<StyleList>();
-    private IEnumerable<IToken> _stylesheet = new IToken[]
+    private readonly Stack<StyleList> _stack = new Stack<StyleList>();
+    private readonly IEnumerable<IToken> _stylesheet = new IToken[]
     {
       new ForegroundColor(new ColorValue(0, 0, 0)),
       new BackgroundColor(new ColorValue(255, 255, 255))

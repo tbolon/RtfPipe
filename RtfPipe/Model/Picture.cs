@@ -14,8 +14,8 @@ namespace RtfPipe
     private UnitValue _widthGoal;
     private UnitValue _height;
     private UnitValue _heightGoal;
-    private int _scaleX = 100;
-    private int _scaleY = 100;
+    private readonly int _scaleX = 100;
+    private readonly int _scaleY = 100;
 
     /// <summary>
     /// Control tokens stored in the RTF document

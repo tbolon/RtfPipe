@@ -5,7 +5,7 @@ namespace RtfPipe.Model
 {
   internal class Run : Node
   {
-    private IEnumerable<IToken> _styles;
+    private readonly IEnumerable<IToken> _styles;
 
     public IEnumerable<IToken> Styles => _styles ?? Enumerable.Empty<IToken>();
     public string Value { get; set; }

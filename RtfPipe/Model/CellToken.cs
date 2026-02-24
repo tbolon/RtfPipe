@@ -7,7 +7,7 @@ namespace RtfPipe.Model
   [DebuggerDisplay("Cell {Index}, {Width} {WidthUnit}")]
   internal class CellToken : IWord
   {
-    private List<IToken> _styles = new List<IToken>();
+    private readonly List<IToken> _styles = new List<IToken>();
 
     public int ColSpan { get; set; } = 1;
     public int Index { get; set; }

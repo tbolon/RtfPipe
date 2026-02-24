@@ -130,7 +130,7 @@ namespace RtfPipe.Model
 
     private class ElementDebugView
     {
-      private Element _elem;
+      private readonly Element _elem;
 
       public IEnumerable<Element> Elements => _elem.Elements().ToArray();
       internal int ListLevel => _elem.ListLevel;

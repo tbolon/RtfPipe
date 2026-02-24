@@ -234,7 +234,7 @@ namespace RtfPipe
       {65001, "utf-8"}
     };
 
-    private static HashSet<string> _eastAsianEncodings = new HashSet<string>()
+    private static readonly HashSet<string> _eastAsianEncodings = new HashSet<string>()
     {
       "windows-874",
       "shift_jis",

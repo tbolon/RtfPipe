@@ -9,7 +9,7 @@ namespace RtfPipe.Model
 {
   internal class CssString
   {
-    private StringBuilder _builder = new StringBuilder();
+    private readonly StringBuilder _builder = new StringBuilder();
 
     public int Length => _builder.Length;
 

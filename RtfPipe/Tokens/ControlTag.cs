@@ -34,7 +34,7 @@ namespace RtfPipe
       return "\\" + Name;
     }
 
-    private static Dictionary<Type, Func<bool, ControlWord<bool>>> _factory = new Dictionary<Type, Func<bool, ControlWord<bool>>>();
+    private static readonly Dictionary<Type, Func<bool, ControlWord<bool>>> _factory = new Dictionary<Type, Func<bool, ControlWord<bool>>>();
 
     public static ControlWord<bool> Negate(ControlWord<bool> word)
     {
