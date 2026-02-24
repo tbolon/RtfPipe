@@ -4,9 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if !NET35
 using System.Threading.Tasks;
-#endif
 using System.Xml;
 
 namespace RtfPipe
@@ -86,20 +84,15 @@ namespace RtfPipe
       CloseCurrElement(false);
       _writer.Flush();
     }
-
-#if ASYNC
     public override Task FlushAsync()
     {
       CloseCurrElement(false);
       return _writer.FlushAsync();
     }
-#endif
-#if NETFULL
     public override void Close()
     {
 
     }
-#endif
 
     public override string LookupPrefix(string ns)
     {
@@ -797,7 +790,7 @@ namespace RtfPipe
     /// Gets or sets a value indicating whether to indent elements.
     /// </summary>
     public bool Indent { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the character string to use when indenting. This setting is used when the <see cref="Indent"/> property is set to <c>true</c>.
     /// </summary>

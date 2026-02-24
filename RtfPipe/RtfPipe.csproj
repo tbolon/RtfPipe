@@ -4,8 +4,4 @@
     <TargetFrameworks>net472</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <DefineConstants>$(DefineConstants);NETFULL;TASKS;ASYNC</DefineConstants>
-  </PropertyGroup>
-
 </Project>

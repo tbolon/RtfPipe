@@ -2,7 +2,6 @@ using RtfPipe.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace RtfPipe.Model
@@ -115,7 +114,7 @@ namespace RtfPipe.Model
       public IEnumerator<IToken> Tokens { get; }
       public bool RawHtml { get; set; }
       public bool ProcessRtf { get; set; }
-      
+
       public TokenState(IEnumerable<IToken> tokens)
       {
         Tokens = tokens.GetEnumerator();

@@ -1,6 +1,7 @@
 using RtfPipe.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace RtfPipe.Model
         if (token is Font font)
           Append(font);
         else if (token is FontSize fontSize)
-          Append("font-size", fontSize.Value.ToPt().ToString("0.#") + "pt");
+          Append("font-size", fontSize.Value.ToPt().ToString("0.#", CultureInfo.InvariantCulture) + "pt");
         else if (token is BackgroundColor background)
           Append("background", "#" + background.Value);
         else if (token is ParagraphBackgroundColor backgroundPara)
@@ -104,8 +105,8 @@ namespace RtfPipe.Model
         {
           if (tokens.OfType<LineSpacingMultiple>().Any(m => m.Value == 1))
           {
-            if ((Math.Abs(lineSpace.Value) / 240.0).ToString("0.#") != "1")
-              Append("line-height", (Math.Abs(lineSpace.Value) * DefaultBrowserLineHeight / 240.0).ToString("0.#"));
+            if ((Math.Abs(lineSpace.Value) / 240.0).ToString("0.#", CultureInfo.InvariantCulture) != "1")
+              Append("line-height", (Math.Abs(lineSpace.Value) * DefaultBrowserLineHeight / 240.0).ToString("0.#", CultureInfo.InvariantCulture));
           }
           else if (lineSpace.Value < 0)
           {
@@ -151,7 +152,7 @@ namespace RtfPipe.Model
 
       if (cellSpacing.Any(v => v.HasValue) && elementType == ElementType.Table)
         Append("border-spacing", UnitValue.Average(new[] { cellSpacing[0] + cellSpacing[2], cellSpacing[1] + cellSpacing[3] }));
-      
+
       if (tokens.OfType<IsOutlined>().Any() && !tokens.OfType<ForegroundColor>().Any())
         Append("color", "#fff");
 
@@ -338,7 +339,7 @@ namespace RtfPipe.Model
 
       if (margins.Any(v => v.HasValue))
         Append("margin", margins);
-      
+
       for (var i = 0; i < borders.Length; i++)
       {
         if (!padding[i].HasValue && borders[i] != null)
@@ -389,8 +390,8 @@ namespace RtfPipe.Model
       }
       else
       {
-        _builder.Append(width.ToString("0")).Append("px ");
-        
+        _builder.Append(width.ToString("0", CultureInfo.InvariantCulture)).Append("px ");
+
         switch (border.Style)
         {
           case BorderStyle.Dashed:
@@ -496,7 +497,7 @@ namespace RtfPipe.Model
       {
         if (i > 0)
           _builder.Append(' ');
-        var px = values[i].ToPx().ToString("0.#");
+        var px = values[i].ToPx().ToString("0.#", CultureInfo.InvariantCulture);
         _builder.Append(px);
         if (px != "0")
           _builder.Append("px");
@@ -504,7 +505,7 @@ namespace RtfPipe.Model
       _builder.Append(";");
       return this;
     }
-    
+
     public CssString Append(string property, string value)
     {
       _builder.Append(property)
